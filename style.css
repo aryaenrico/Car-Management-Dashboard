@@ -1,0 +1,95 @@
+*{
+      font-family: 'IBM Plex Sans'   
+}
+body{
+      background-color: #E5E5E5;
+}
+
+.title{
+      margin-top: 30px;
+      margin-left: 100px;
+}
+.title h1{
+      font-weight: bold;
+      font-size: 20px;
+}
+
+.add-new-car{
+      border-radius: 4px;
+      width: 200px;
+      height: 50px;
+      color: white;
+      background-color: #0D28A6;
+      margin-top: 40px;
+}
+.button-category{
+      margin-left: 100px;
+}
+.btn-category{
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      background-color: white;
+      border-radius: 4px;
+      color: #AEB7E1;
+     max-width: 90px;
+     
+}
+.btn-category:focus{
+     background-color: #CFD4ED;
+     color: #0D28A6;
+}
+.btn-margin{
+      margin-left: 28px;
+}
+.category{
+      margin-top: 24px;
+}
+.car-list{
+      margin-top: 50px;
+      padding-left: 140px;
+}
+.container-img{
+      margin: 0px auto 0px auto;
+      width: 303px;
+      height: 222px;
+}
+.img-status{
+      object-fit: contain;
+}
+.updated-text{
+      display: inline;
+}
+.harga{
+      margin-bottom: 3px;
+}
+.btn-delete-car{ 
+     min-width: 150px;
+     border-radius: 4px;
+}
+.delete-color{
+      color: #FA2C5A;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 14px;
+      margin-left: 10px;
+      text-decoration: none;
+}
+.edit-color{
+      color: white;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 14px;
+      margin-left: 10px;
+      text-decoration: none;
+}
+.container-text-body{
+      max-height: 140px;
+}
+
+.card-container{
+      height: 480px;
+}
+.button-area{
+      margin-top: 24px;
+}

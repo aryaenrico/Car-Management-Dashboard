@@ -1,0 +1,29 @@
+
+*{
+      font-family: 'IBM Plex Sans';
+}
+body{
+      background-color: #E5E5E5;
+}
+     
+
+h2{
+      margin-top: 147px;
+      font-weight: 700;
+      font-size: 30px;
+}
+.current-menu{
+      font-style: normal;
+font-weight: 700;
+font-size: 12px;
+}
+
+.container-bg{
+      background-color: white;
+}
+
+.header-input{
+      font-style: normal;
+font-weight: 300;
+font-size: 16px;
+}
