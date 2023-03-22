@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Add New Car</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+      <link rel="stylesheet" href="../style2.css">
+</head>
+<body>
+      <header>
+            <p class="current-menu">Cars &#62; List Car 	&#62; Add New Car</p>
+      </header>
+      <div class="container">
+            <h2>Add New Car</h2>
+      </div>
+
+       <section class="area-form">
+            <div class="container container-bg" style="border: 3px solid yellow">
+                  <form method="post" action="car/cloud" enctype="multipart/form-data">
+                        <div class="row g-3 align-items-center mb-3">
+                              <div class="col-2">
+                                <label for="inputPassword6" class="col-form-label header-input">Nama</label>
+                              </div>
+                              <div class="col-7">
+                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="nama">
+                              </div>
+                              
+                            </div>
+
+                            <div class="row g-3 align-items-center mb-3">
+                              <div class="col-2">
+                                <label for="inputPassword6" class="col-form-label header-input">Sewa Perhari</label>
+                              </div>
+                              <div class="col-7">
+                                <input type="text" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="gaji">
+                              </div>
+                              
+                            </div>
+
+                            <div class="row g-3 align-items-center mb-3">
+                              <div class="col-2">
+                                <label for="inputPassword6" class="col-form-label header-input">Ukuran</label>
+                              </div>
+                              <div class="col-7">
+                                    <select class="form-select" aria-label="Default select example">
+                                         
+                                          <option value="1" selected>Small</option>
+                                          <option value="2">Medium</option>
+                                          <option value="3">Large</option>
+                                        </select>
+                              </div>
+                              
+                            </div>
+
+                            <div class="row g-3 align-items-center mb-3">
+                              <div class="col-2">
+                                <label for="inputPassword6" class="col-form-label header-input">Foto</label>
+                              </div>
+                              <div class="col-7">
+                                <input type="file" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" name="picture">
+                              </div>
+                              
+                            </div>
+                            <input type="submit">
+                  </form>
+            </div>
+       </section>
+      
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
