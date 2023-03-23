@@ -80,6 +80,10 @@ server.get("/cek",(req,res)=>{
       console.info(Pemain.findAll())
 })
 
+server.get("/add_car",(req,res)=>{
+      res.render("add_car",{});
+})
+
 server.post('/car', uploadDisk.single("picture"), (req, res) => {
       //const url = `/upload/${req.file.filename}`;
       //const file = req.file.filename;
@@ -129,6 +133,8 @@ server.post('/car', uploadDisk.single("picture"), (req, res) => {
         
     })
   })
+
+  server.get
 
 server.get("/api/v1/data/:angka",(req,res)=>{
       res.send(req.params.angka);
