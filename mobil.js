@@ -16,6 +16,16 @@
             
       }
 
+      static update(Id,{nama_mobil,ukuran,foto,harga_sewa}){
+            const temp = new MobilController(nama_mobil,ukuran,foto,harga_sewa);
+            const result = Mobil.update(temp,{
+                  where:{
+                        id :Id,
+                  },
+            });
+            return result;
+      }
+
       static findAll(){
             return Mobil.findAll();
       }

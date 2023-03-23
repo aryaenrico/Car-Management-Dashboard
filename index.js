@@ -39,6 +39,7 @@ server.delete("/car/:id",async(req,res)=>{
             if (deleteMobil == undefined){
                   res.status(404).json({message:"data tidak ada"})
             }else{
+                  const status = await Mobil.deleteCar(req.params.id);
                   res.status(200).json({message:"berhasil dihapus"})
             }
          }catch(err){
@@ -57,7 +58,7 @@ server.get("/car/:id",async(req,res)=>{
                         data:detailMobil
                   });
             }else{
-                  res.status(404).json({message:"sukses",data:null});
+                  res.status(404).json({message:"data tidak ada",data:null});
             }
             
             
@@ -67,32 +68,19 @@ server.get("/car/:id",async(req,res)=>{
       
    })
 
-
-
-server.post("/data",(req,res)=>{
-      console.info(req.body);
-      
-      res.send("sukses");
-      
-})
-
-server.get("/cek",(req,res)=>{
-      console.info(Pemain.findAll())
-})
-
 server.get("/add_car",(req,res)=>{
       res.render("add_car",{});
 })
 
-server.post('/car', uploadDisk.single("picture"), (req, res) => {
-      //const url = `/upload/${req.file.filename}`;
-      //const file = req.file.filename;
-      console.log(req.body.picture);
-      console.info(req.body.nama);
-      res
-        .status(200)
-        .json({ message: "Foto berhasil di-upload, silahkan cek URL" });
-  })
+// server.post('/car', uploadDisk.single("picture"), (req, res) => {
+//       //const url = `/upload/${req.file.filename}`;
+//       //const file = req.file.filename;
+//       console.log(req.body.picture);
+//       console.info(req.body.nama);
+//       res
+//         .status(200)
+//         .json({ message: "Foto berhasil di-upload, silahkan cek URL" });
+//   })
 
   server.post('/car/cloud', uploadMemory.single("foto"),  (req, res) => {
    const fileBase64 = req.file.buffer.toString("base64")
@@ -119,30 +107,48 @@ server.post('/car', uploadDisk.single("picture"), (req, res) => {
                   message : err.message
             })
         }
-
-      //   res.status(201).json({
-      //       message: "Upload file berhasil",
-      //       url: result.url
-      //   })
-      
-        
-
-        
-       
-
-        
     })
   })
 
-  server.get
+  server.put('/car/:id', uploadMemory.single("foto"), (req, res) => {
+      
+      const fileBase64 = req.file.buffer.toString("base64");
+      const file = `data:${req.file.mimetype};base64,${fileBase64}`;
+       cloudinary.uploader.upload(file, async (err, result) => {
+           if(!!err){
+               console.log(err)
+               return res.status(400).json({
+                   message: "Gagal upload file"
+               })
+           }
+           req.body.foto = result.url;
 
-server.get("/api/v1/data/:angka",(req,res)=>{
-      res.send(req.params.angka);
-})
 
-server.get("/api/v1/param",(req,res)=>{
-      res.send(`${req.query.data1}  ${req.query.data2}`);
-})
+           try{
+            const is_exist =  await Mobil.findById(req.params.id);
+            if (is_exist != undefined){
+                 const update =  await Mobil.update(req.params.id,req.body);
+
+                 if (update != undefined){
+                  res.status(200).json({message:"data berhasil di ubah"});
+                 }else{
+                  res.status(500).json({message:"internal server error"});
+                 }
+              
+            } else{
+               res.status(404).json({
+                     message:"data tidak ada"
+               })
+            }
+      
+      }catch(err){
+            res.status(400).json({
+                  message : err.message
+            })
+        }
+          
+       })
+     })
 server.listen(PORT,()=>{
       console.log(`Server Berjalan di http://localhost:${PORT}`);
 });
