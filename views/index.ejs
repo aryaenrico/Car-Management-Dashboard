@@ -9,17 +9,17 @@
 </head>
   <body>
     <header>
-      <div class="container-fluid d-flex flex-row justify-content-between" style="border: 3px solid yellow;">
+      <div class="container-fluid d-flex flex-row justify-content-between">
             <h1 class="title">List Car</h1>
             <button class="btn btn-primary add-new-car" type="button" id="add-car"><a href="/car">+ Add New Car</a></button >
       </div>
     </header>
       <section class="category">
             <div class="container-fluid ">
-                  <button class="btn btn-category button-category" type="button">All</button>
-                  <button class="btn btn-category btn-margin" type="button">Small</button>
-                  <button class="btn btn-category btn-margin" type="button">Medium</button>
-                  <button class="btn btn-category btn-margin" type="button">Large</button>
+                  <button class="btn btn-category button-category" type="button"><a href="/">All</a></button>
+                  <button class="btn btn-category btn-margin" type="button"> <a href="/?size=small">Small</a> </button>
+                  <button class="btn btn-category btn-margin" type="button"><a href="/?size=medium">Medium</a></button>
+                  <button class="btn btn-category btn-margin" type="button"><a href="/?size=large">Large</a></button>
             </div>
 
       </section>
@@ -27,115 +27,43 @@
       <section class="data-car">
             <div class="container-fluid car-list">
                   <div class="row">
-                        <div class="col-4">
-                              <div class="card card-container" style="width: 22rem;">
-                                    <div class="container-img d-flex justify-content-center">
-                                          <img class="card-img-top img-status" src="image_1.png" alt="Logo Mobil">
-                                    </div>
-                                    
-                                    <div class="card-body container-text-body">
-                                      <h5 class="card-title">Nama/Tipe Mobil</h5>
-                                      <p class="card-text harga">Rp 430.000 / hari</p>
-                                      <img src="../img/fi_clock.png" alt="logo-waktu">
-                                      <p class="card-text updated-text">Updated at 4 Apr 2022, 09.00</p>
-                                    </div>
-
-                                    <div class="container-fluid button-area ">
-                                          <div class="row justify-content-around">
-                                                <div class="col-5">
-                                                      <button type="button" class="btn btn-outline-danger btn-delete-car"><img src="Vector_1.png" alt="hapus-logo"><a href="" class="delete-color">DELETE</a></button>
-                                                </div>
-
-
-                                                <div class="col-5">
-                                                      <button type="button" class="btn btn-success btn-delete-car"><img src="fi_edit.png" alt="edit-logo"><a href="" class="edit-color">EDIT</a></button>
-                                                </div>
-                                                     
+                       <% if (data.length >0){ %>
+                        <% data.forEach ((e,i) => {%>
+                        
+                              <div class="col-4">
+                                    <div class="card card-container" style="width: 22rem;">
+                                          <div class="container-img d-flex justify-content-center">
+                                                <img class="card-img-top img-status" src="<%=e.foto%>" alt="Logo Mobil">
                                           </div>
-                                        
-
+                                          
+                                          <div class="card-body container-text-body">
+                                            <h5 class="card-title"><%=e.nama_mobil%></h5>
+                                            <p class="card-text harga"><%=e.harga_sewa%> /  Hari</p>
+                                            <img src="fi_clock.png" alt="logo-waktu">
+                                            <p class="card-text updated-text"><%=e.updatedAt%></p>
+                                          </div>
+      
+                                          <div class="container-fluid button-area ">
+                                                <div class="row justify-content-around">
+                                                      <div class="col-5">
+                                                            <button type="button" class="btn btn-outline-danger btn-delete-car"><img src="Vector_1.png" alt="hapus-logo"><a href="car/<%=e.id%>" class="delete-color">DELETE</a></button>
+                                                      </div>
+      
+      
+                                                      <div class="col-5">
+                                                            <button type="button" class="btn btn-success btn-delete-car"><img src="fi_edit.png" alt="edit-logo"><a href="car/<%=e.id%>" class="edit-color">EDIT</a></button>
+                                                      </div>
+                                                           
+                                                </div>
+                                              
+      
+                                          </div>
                                     </div>
                               </div>
-                        </div>
-
-                        <div class="col-4">
-                              <div class="card card-container" style="width: 22rem;">
-                                    <div class="container-img d-flex justify-content-center">
-                                          <img class="card-img-top img-status" src="image_1.png" alt="Logo Mobil">
-                                    </div>
-                                    
-                                    <div class="card-body container-text-body">
-                                      <h5 class="card-title">Nama/Tipe Mobil</h5>
-                                      <p class="card-text harga">Rp 430.000 / hari</p>
-                                      <img src="../img/fi_clock.png" alt="logo-waktu">
-                                      <p class="card-text updated-text">Updated at 4 Apr 2022, 09.00</p>
-                                    </div>
-
-                                    <div class="container-fluid button-area ">
-                                          <div class="row justify-content-around">
-                                                <div class="col-5">
-                                                      <button type="button" class="btn btn-outline-danger btn-delete-car"><img src="Vector_1.png" alt="hapus-logo"><a href="" class="delete-color">DELETE</a></button>
-                                                </div>
-
-
-                                                <div class="col-5">
-                                                      <button type="button" class="btn btn-success btn-delete-car"><img src="fi_edit.png" alt="edit-logo"><a href="" class="edit-color">EDIT</a></button>
-                                                </div>
-                                                     
-                                          </div>
-                                        
-
-                                    </div>
-                              </div>
-                        </div>
-
-
-
-                        <div class="col-4">
-                              <div class="card card-container" style="width: 22rem;">
-                                    <div class="container-img d-flex justify-content-center">
-                                          <img class="card-img-top img-status" src="image_1.png" alt="Logo Mobil">
-                                    </div>
-                                    
-                                    <div class="card-body container-text-body">
-                                      <h5 class="card-title">Nama/Tipe Mobil</h5>
-                                      <p class="card-text harga">Rp 430.000 / hari</p>
-                                      <img src="../img/fi_clock.png" alt="logo-waktu">
-                                      <p class="card-text updated-text">Updated at 4 Apr 2022, 09.00</p>
-                                    </div>
-
-                                    <div class="container-fluid button-area ">
-                                          <div class="row justify-content-around">
-                                                <div class="col-5">
-                                                      <button type="button" class="btn btn-outline-danger btn-delete-car"><img src="Vector_1.png" alt="hapus-logo"><a href="" class="delete-color">DELETE</a></button>
-                                                </div>
-
-
-                                                <div class="col-5">
-                                                      <button type="button" class="btn btn-success btn-delete-car"><img src="fi_edit.png" alt="edit-logo"><a href="" class="edit-color">EDIT</a></button>
-                                                </div>
-                                                     
-                                          </div>
-                                        
-
-                                    </div>
-                              </div>
-                        </div>
-
-                       
-
-
-                        
-
-
-                        
-
-
-                        
-
-                       
-
-                        
+                              <%})%>
+                        <% }else {%>
+                          <p>DATA KOSONG</p>    
+                        <%}%>           
                   </div>
             </div>
       </section>
