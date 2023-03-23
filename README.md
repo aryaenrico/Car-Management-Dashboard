@@ -13,7 +13,10 @@ Daftar Endpoint Yang dapat diakses melalui Postman
 
 Untuk operasi lainnya  
 1.Tambah data bisa dengan menekan tombol add new car dan mengisi form  
-2. dan filtering data mobil berdasarkan ukuran bisa langsung dengan mengakses halaman web
+2. dan filtering data mobil berdasarkan ukuran bisa langsung dengan mengakses halaman web  
+
+struktur dari tabel mobil  
+![table mobil] (table_mobil.png)
 
 
 
