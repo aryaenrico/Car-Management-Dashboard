@@ -12,6 +12,7 @@
       static create({nama_mobil,ukuran,foto,harga_sewa}){
             const objCar = new MobilController(nama_mobil,ukuran,foto,harga_sewa);
             const result = Mobil.create(objCar);
+            Mobil.create()
             return result;
             
       }
