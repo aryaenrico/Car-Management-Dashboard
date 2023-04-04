@@ -61,13 +61,9 @@ module.exports={
             
       },
      async allCar(req,res){
-            const {role} = req.user;
+           
             try{
-                  if (!cekRole(role)){
-                        res.status(401).json({
-                              message:'Unauthorized'
-                        });
-                  }
+                  
                   dataMobil = await mobileService.allCars();
 
                   res.status(200).json({
@@ -80,10 +76,36 @@ module.exports={
                         message:e.message
                   });
             }
-            
-            
-           
-
+      },
+      async delete(req,res){
+            const {role,id} = req.user;
+            try{
+                  if (!cekRole(role)){
+                        res.status(401).json({
+                              message:'Unauthorized'
+                        });
+                  }
+                  carIsExist = await mobileService.findCar(req.params.id);
+                  console.log(carIsExist);
+                  if (carIsExist == undefined || carIsExist.deletedBy != 0 ){
+                        res.status(404).json({
+                              status:"Fail",
+                              message:"data not found"
+                        })
+                  }else{
+                        deletedCar = await mobileService.delete(id,carIsExist);
+                        res.status(200).json({
+                              status:"success",
+                              message:"data sudah di hapus"
+                        })
+                  }
+                  
+            }catch(e){
+                  res.status(500).json({
+                        status:"fail",
+                        message:e.message
+                  });
+            }
       }
 
       

@@ -14,6 +14,24 @@ module.exports ={
                         }
                   }
             );
+      },
+
+
+      findCar(id){
+            return Mobil.findOne({
+                  where:{
+                        id:id
+                  }
+            });
+      },
+
+      deleteCar (payload){
+            console.log(payload);
+            return Mobil.update(payload,{
+                  where:{
+                        id:payload.id
+                  }
+            });
       }
 
       
