@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const salt =10;
+const jwt = require('jsonwebtoken');
 
 async function encryptPassword(password){
   try{
@@ -19,4 +20,8 @@ async function checkPassword(password, encryptedPassword){
   }
 }
 
-module.exports={encryptPassword};
+async function createToken(payload){
+  return jwt.sign(payload,process.env.JWT_SIGNATURE_KEY || "arya enrico");
+}
+
+module.exports={encryptPassword,checkPassword,createToken};
