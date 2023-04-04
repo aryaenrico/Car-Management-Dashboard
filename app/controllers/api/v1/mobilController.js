@@ -7,7 +7,7 @@ const {cekRole} = require('../../../../utils/file');
 module.exports={
    async create(req,res){
       const {role,id} = req.user;
-      console.info(id);
+     
       if (!cekRole(role)){
             res.status(401).json({
                   message:'Unauthorized'
@@ -61,21 +61,17 @@ module.exports={
             
       },
      async allCar(req,res){
-           
-            try{
-                  
-                  dataMobil = await mobileService.allCars();
-
+            mobileService.allCars().then(data=>{
                   res.status(200).json({
                         status:"success",
-                        data:dataMobil
+                        data:data
                   })
-            }catch(e){
+            }).catch(e=>{
                   res.status(500).json({
                         status:"fail",
                         message:e.message
                   });
-            }
+            })
       },
       async delete(req,res){
             const {role,id} = req.user;
@@ -106,6 +102,39 @@ module.exports={
                         message:e.message
                   });
             }
+      },
+      async update(req,res){
+            const {role,id} = req.user;
+            console.info(`angka: ${id}`);
+            if (!cekRole(role)){
+                  res.status(401).json({
+                        message:'Unauthorized'
+                  })
+            }
+
+            carIsExist = await mobileService.findCar(req.params.id);
+            if (carIsExist == undefined){
+                  res.status(404).json({
+                        status:"Fail",
+                        message:"data not found"
+                  })
+            }
+      
+            const fileBase64 = req.file.buffer.toString("base64")
+            const file = `data:${req.file.mimetype};base64,${fileBase64}`
+            const url = await uploadService.uploadToCloudinary(file);
+            const payload={... req.body,
+            updatedBy:id};
+            mobileService.update(carIsExist,payload).then(result=>{
+                        res.status(200).json({
+                              status:"updated"
+                        });
+                  }) .catch((err) => {
+                        res.status(422).json({
+                          status: "FAIL",
+                          message: err.message,
+                        });
+                      }); 
       }
 
       

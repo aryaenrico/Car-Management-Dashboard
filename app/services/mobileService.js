@@ -17,11 +17,26 @@ module.exports ={
  
      
       },
-      allCars(){
+     async update(olddata,payload){
+            const payloadUpdate ={
+                  id:olddata.id,
+                  nama_mobil:payload.nama_mobil,
+                  harga_sewa:payload.harga_sewa,
+                  ukuran:payload.ukuran,
+                  foto:payload.foto,
+                  createdBy:olddata.createdBy,
+                  createdAt:olddata.createdAt,
+                  updatedBy:payload.updatedBy,
+                  updatedAt: new Date()
+            };
+            console.info(payloadUpdate);
+            return repositories.updateCar(payloadUpdate);
+      },
+      async allCars(){
             return repositories.car();
       },
       async delete(id,payload){
-            const paramDelete ={
+            const payloadDelete ={
                   id:payload.id,
                   nama_mobil:payload.nama_mobil,
                   harga_sewa:payload.harga_sewa,
@@ -36,7 +51,7 @@ module.exports ={
             };
            
 
-            return repositories.deleteCar(paramDelete);
+            return repositories.deleteCar(payloadDelete);
            
       },
       async findCar(id){

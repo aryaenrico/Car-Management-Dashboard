@@ -26,13 +26,22 @@ module.exports ={
       },
 
       deleteCar (payload){
-            console.log(payload);
+           
+            return Mobil.update(payload,{
+                  where:{
+                        id:payload.id
+                  }
+            });
+      },
+
+      updateCar(payload){
             return Mobil.update(payload,{
                   where:{
                         id:payload.id
                   }
             });
       }
-
+      
+     
       
 }
