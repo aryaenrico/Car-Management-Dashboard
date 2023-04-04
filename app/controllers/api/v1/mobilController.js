@@ -6,8 +6,8 @@ const {cekRole} = require('../../../../utils/file');
  
 module.exports={
    async create(req,res){
-      const {role,id} = req.user;
-     
+    
+    const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
       if (!cekRole(role)){
             res.status(401).json({
                   message:'Unauthorized'
@@ -17,7 +17,7 @@ module.exports={
       const file = `data:${req.file.mimetype};base64,${fileBase64}`
       const url = await uploadService.uploadToCloudinary(file);
       req.body.foto =url.url;
-      req.body.id =id;
+      req.body.id =res.locals.user.id;
       
       mobileService.create(req.body).then(result=>{
                   res.status(201).json({
@@ -32,34 +32,6 @@ module.exports={
                 }); 
       },
 
-      async uploadImage(req,res,next){
-      const fileBase64 = req.file.buffer.toString("base64")
-      const file = `data:${req.file.mimetype};base64,${fileBase64}`
-      uploadService.uploadToCloudinary(file).then(data=>{
-            req.body.foto = data;
-            next();
-      }).catch(e=>{
-            res.status(500).json({
-                  status:"internal server error",
-                  message:e
-            })
-      })
-
-      },
-
-       cek(req,res,next){
-            const data =req.get('token');
-           if (data != undefined){
-            console.info(data);
-            console.info(req.body)
-            next();
-            return 
-           }
-           res.status(400).json({
-            data: data
-           });
-            
-      },
      async allCar(req,res){
             mobileService.allCars().then(data=>{
                   res.status(200).json({
@@ -74,16 +46,15 @@ module.exports={
             })
       },
       async delete(req,res){
-            const {role,id} = req.user;
+            const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
             try{
                   if (!cekRole(role)){
                         res.status(401).json({
                               message:'Unauthorized'
                         });
                   }
-                  carIsExist = await mobileService.findCar(req.params.id);
-                  console.log(carIsExist);
-                  if (carIsExist == undefined || carIsExist.deletedBy != 0 ){
+                  carFind = await mobileService.findCar(req.params.id);
+                  if (carFind == undefined || carFind.deletedBy != 0 ){
                         res.status(404).json({
                               status:"Fail",
                               message:"data not found"
@@ -104,28 +75,24 @@ module.exports={
             }
       },
       async update(req,res){
-            const {role,id} = req.user;
-            console.info(`angka: ${id}`);
+            const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
             if (!cekRole(role)){
                   res.status(401).json({
                         message:'Unauthorized'
                   })
             }
 
-            carIsExist = await mobileService.findCar(req.params.id);
-            if (carIsExist == undefined){
-                  res.status(404).json({
-                        status:"Fail",
-                        message:"data not found"
-                  })
-            }
+            carFind = await mobileService.findCar(req.params.id);
+            carFind == undefined ? res.status(404).json({status:"fail",message:"Data Not Found"}) : null;
+            
       
             const fileBase64 = req.file.buffer.toString("base64")
             const file = `data:${req.file.mimetype};base64,${fileBase64}`
             const url = await uploadService.uploadToCloudinary(file);
+            req.body.foto =url.url;
             const payload={... req.body,
-            updatedBy:id};
-            mobileService.update(carIsExist,payload).then(result=>{
+            updatedBy:res.locals.user.id};
+            mobileService.update(carFind,payload).then(result=>{
                         res.status(200).json({
                               status:"updated"
                         });
@@ -135,10 +102,5 @@ module.exports={
                           message: err.message,
                         });
                       }); 
-      }
-
-      
-      
-      
-      
+      }      
 }

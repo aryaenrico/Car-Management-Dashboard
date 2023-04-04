@@ -29,7 +29,6 @@ module.exports ={
                   updatedBy:payload.updatedBy,
                   updatedAt: new Date()
             };
-            console.info(payloadUpdate);
             return repositories.updateCar(payloadUpdate);
       },
       async allCars(){
@@ -49,8 +48,7 @@ module.exports ={
                   updatedBy:id,
                   updatedAt: new Date()
             };
-           
-
+      
             return repositories.deleteCar(payloadDelete);
            
       },

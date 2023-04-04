@@ -4,14 +4,16 @@ const {encryptPassword,checkPassword,createToken} = require('../../../../utils/f
 const jwt = require('jsonwebtoken');
 module.exports={
       async register (req,res){
+       const role =res.locals.user.role;
+       console.info(req.url);
        const { email, password } = await req.body;
-       console.info(password);
+       let payloadRole = role =="superadmin" ? "admin" : "member";
     
         const encryptedPassword = await encryptPassword(password);
         const payload ={
             email:email,
             password:encryptedPassword,
-            role:"member"
+            role:payloadRole
         }
         authServices.register(payload).then(result=>{
             res.status(201).json({
@@ -29,14 +31,12 @@ module.exports={
       async login(req,res){
             const {email,password} = req.body;
             const user = await authServices.findUser(email);
-
             if (user != undefined){
-                  isPasswordValid = await checkPassword(password,user.password);
-                  if ( !isPasswordValid){
-                        res.status(404).json({
-                              status:"Not Found",
-                              message:"Wrong Password"
-                        })
+            validPassword = await checkPassword(password,user.password);
+            if (!validPassword){
+                  res.status(404).json({
+                     status:"Not Found",
+                     message:"Wrong Password"});
                   }else{
                         const tempUser = {
                               id:user.id,
@@ -45,8 +45,7 @@ module.exports={
                               createdAt:user.createdAt,
                               updatedAt:user.updatedAt
                            }
-                     const token = await createToken(tempUser);
-                      
+            const token = await createToken(tempUser);          
                   res.status(200).json({
                         status:"Success",
                         data:{
@@ -56,15 +55,15 @@ module.exports={
                       })  
                   }
             }else{
-                  res.status(404).json({
-                        status:"Not Found",
-                        message:"email is not registered"
-                  })
+              res.status(404).json({
+                  status:"Not Found",
+                  message:"email is not registered"
+            })
             }
       },
 
       async whoami(req,res){
-        res.status(200).json(req.user)
+        res.status(200).json(res.locals.user);
       },
 
       async authorize(req,res,next){
@@ -72,18 +71,19 @@ module.exports={
             const bearertoken = req.headers.authorization;
             if (bearertoken == undefined){
                   res.status(401).json({
-                        message:"Unauthorized cok"
+                        message:"Unauthorized "
                   });
+                  return;
             }
             const token = bearertoken.split("Bearer ")[1];
             const tokenPayload =jwt.verify(token,process.env.JWT_SIGNATURE_KEY || "arya enrico");
-
-            req.user = await authServices.findUser(tokenPayload.email);
+            res.locals.user =await authServices.findUser(tokenPayload.email) ;
             next();
+            return;
             } catch(e){
-                  res.status(401).json({
+                res.status(401).json({
                         message:"Unauthorized"
-                  });
+            });
             }
       }
       
