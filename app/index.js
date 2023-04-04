@@ -5,6 +5,7 @@ const router = require('../config/routes');
 const server = express();
 
 server.use(express.json());
+server.use(express.urlencoded({ extended: true }))
 server.use(router)
 
 

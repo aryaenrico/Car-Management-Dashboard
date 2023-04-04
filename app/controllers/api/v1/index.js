@@ -1,3 +1,4 @@
 const mobilController = require('./mobilController');
+const authController = require('./authController');
 
-module.exports={mobilController};
+module.exports={mobilController,authController};

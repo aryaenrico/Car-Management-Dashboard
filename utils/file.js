@@ -1,10 +1,22 @@
-const DatauriParser = require('datauri/parser')
+const bcrypt = require('bcryptjs');
+const salt =10;
 
-const parser = new DatauriParser()
-
-const bufferToDataURI = (fileFormat, buffer) =>
-  parser.format(fileFormat, buffer)
-
-module.exports = {
-  bufferToDataURI,
+async function encryptPassword(password){
+  try{
+      const encryptedPassword = await bcrypt.hash(password, salt);
+      return encryptedPassword
+  } catch(e) {
+      throw new Error(e)
+  }
 }
+
+async function checkPassword(password, encryptedPassword){
+  try{
+      const isCorrect = bcrypt.compare(password, encryptedPassword)
+      return isCorrect
+  } catch(e){
+      throw new Error(e)
+  }
+}
+
+module.exports={encryptPassword};

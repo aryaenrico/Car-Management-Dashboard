@@ -7,12 +7,8 @@ module.exports={
    async create(req,res){
       const fileBase64 = req.file.buffer.toString("base64")
       const file = `data:${req.file.mimetype};base64,${fileBase64}`
-      console.info(file);
       const url = await uploadService.uploadToCloudinary(file);
-      const{url:url_foto} =url;
-      req.body.foto =url_foto;
-      
-      
+      req.body.foto =url.url;
       
       mobileService.create(req.body).then(result=>{
                   res.status(201).json({
@@ -27,7 +23,7 @@ module.exports={
                 }); 
       },
 
-      uploadImage(req,res,next){
+      async uploadImage(req,res,next){
       const fileBase64 = req.file.buffer.toString("base64")
       const file = `data:${req.file.mimetype};base64,${fileBase64}`
       uploadService.uploadToCloudinary(file).then(data=>{
@@ -40,6 +36,20 @@ module.exports={
             })
       })
 
+      },
+
+       cek(req,res,next){
+            const data =req.get('token');
+           if (data != undefined){
+            console.info(data);
+            console.info(req.body)
+            next();
+            return 
+           }
+           res.status(400).json({
+            data: data
+           });
+            
       }
 
       
