@@ -11,7 +11,7 @@ module.exports ={
                   harga_sewa:harga_sewa,
                   createdBy:id,
                   updatedBy:id,
-                  deletedBy:0
+                  deletedBy:"",
             };
             return repositories.create(payload);
  
@@ -43,7 +43,6 @@ module.exports ={
                   foto:payload.foto,
                   createdBy:payload.createdBy,
                   createdAt:payload.createdAt,
-                  modifiedBy:id,
                   deletedBy:id,
                   updatedBy:id,
                   updatedAt: new Date()

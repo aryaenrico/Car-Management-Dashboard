@@ -8,7 +8,9 @@ module.exports={
    async create(req,res){
     
     const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
-      if (!cekRole(role)){
+    console.info(cekRole(role)); 
+    
+    if (!await cekRole(role)){
             res.status(401).json({
                   message:'Unauthorized'
             })
@@ -17,7 +19,7 @@ module.exports={
       const file = `data:${req.file.mimetype};base64,${fileBase64}`
       const url = await uploadService.uploadToCloudinary(file);
       req.body.foto =url.url;
-      req.body.id =res.locals.user.id;
+      req.body.id =res.locals.user.email;
       
       mobileService.create(req.body).then(result=>{
                   res.status(201).json({
@@ -48,23 +50,26 @@ module.exports={
       async delete(req,res){
             const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
             try{
-                  if (!cekRole(role)){
+                  if (! await cekRole(role)){
                         res.status(401).json({
                               message:'Unauthorized'
                         });
+                        return
                   }
                   carFind = await mobileService.findCar(req.params.id);
-                  if (carFind == undefined || carFind.deletedBy != 0 ){
+                  if (carFind == undefined || carFind.deletedBy != "" ){
                         res.status(404).json({
                               status:"Fail",
                               message:"data not found"
                         })
+                        return
                   }else{
-                        deletedCar = await mobileService.delete(id,carIsExist);
+                        deletedCar = await mobileService.delete(res.locals.user.email,carIsExist);
                         res.status(200).json({
                               status:"success",
                               message:"data sudah di hapus"
                         })
+                        return
                   }
                   
             }catch(e){
@@ -72,14 +77,16 @@ module.exports={
                         status:"fail",
                         message:e.message
                   });
+                  return
             }
       },
       async update(req,res){
             const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
-            if (!cekRole(role)){
+            if (! await cekRole(role)){
                   res.status(401).json({
                         message:'Unauthorized'
                   })
+                  return
             }
 
             carFind = await mobileService.findCar(req.params.id);
@@ -91,7 +98,7 @@ module.exports={
             const url = await uploadService.uploadToCloudinary(file);
             req.body.foto =url.url;
             const payload={... req.body,
-            updatedBy:res.locals.user.id};
+            updatedBy:res.locals.user.email};
             mobileService.update(carFind,payload).then(result=>{
                         res.status(200).json({
                               status:"updated"

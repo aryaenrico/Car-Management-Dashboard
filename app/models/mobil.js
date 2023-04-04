@@ -19,15 +19,15 @@ module.exports = (sequelize, DataTypes) => {
     foto: DataTypes.TEXT,
     harga_sewa: DataTypes.FLOAT,
     createdBy:{
-      type:DataTypes.INTEGER,
+      type:DataTypes.STRING,
       allowNull: false
     },
     updatedBy:{
-      type:DataTypes.INTEGER,
+      type:DataTypes.STRING,
       allowNull: false
     },
     deletedBy:{
-      type:DataTypes.INTEGER,
+      type:DataTypes.STRING,
       allowNull: true
     },
   }, {

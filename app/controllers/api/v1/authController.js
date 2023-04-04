@@ -4,7 +4,8 @@ const {encryptPassword,checkPassword,createToken} = require('../../../../utils/f
 const jwt = require('jsonwebtoken');
 module.exports={
       async register (req,res){
-       const role =res.locals.user.role;
+       const role = res.locals.user == undefined ? "member" : res.locals.user.role;
+       //const role =res.locals.user.role;
        console.info(req.url);
        const { email, password } = await req.body;
        let payloadRole = role =="superadmin" ? "admin" : "member";

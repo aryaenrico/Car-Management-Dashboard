@@ -1,4 +1,6 @@
-const {Mobil} = require('../models');
+const {Mobil, sequelize} = require('../models');
+const {User} = require('../models');
+const { QueryTypes } = require('sequelize');
 
 module.exports ={
 
@@ -6,11 +8,13 @@ module.exports ={
             return Mobil.create(createArgs);
       },
 
-      car(){
+      async car(){
+           
+           
             return Mobil.findAll(
                   {
                         where:{
-                              deletedBy:0
+                              deletedBy:""
                         }
                   }
             );
