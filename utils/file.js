@@ -24,4 +24,9 @@ async function createToken(payload){
   return jwt.sign(payload,process.env.JWT_SIGNATURE_KEY || "arya enrico");
 }
 
-module.exports={encryptPassword,checkPassword,createToken};
+async function cekRole(role){
+  return (role == "admin" || role == "superadmin")
+
+}
+
+module.exports={encryptPassword,checkPassword,createToken,cekRole};

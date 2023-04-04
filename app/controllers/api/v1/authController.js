@@ -70,6 +70,11 @@ module.exports={
       async authorize(req,res,next){
             try{
             const bearertoken = req.headers.authorization;
+            if (bearertoken == undefined){
+                  res.status(401).json({
+                        message:"Unauthorized cok"
+                  });
+            }
             const token = bearertoken.split("Bearer ")[1];
             const tokenPayload =jwt.verify(token,process.env.JWT_SIGNATURE_KEY || "arya enrico");
 
