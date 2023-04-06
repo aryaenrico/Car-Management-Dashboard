@@ -1,12 +1,10 @@
 
 const authServices = require('../../../services/authServices');
-const {encryptPassword,checkPassword,createToken} = require('../../../../utils/file');
+const {encryptPassword,checkPassword,createToken,cekRole} = require('../../../../utils/file');
 const jwt = require('jsonwebtoken');
 module.exports={
       async register (req,res){
        const role = res.locals.user == undefined ? "member" : res.locals.user.role;
-       //const role =res.locals.user.role;
-       console.info(req.url);
        const { email, password } = await req.body;
        let payloadRole = role =="superadmin" ? "admin" : "member";
     
@@ -27,7 +25,35 @@ module.exports={
                   message: e.message,
                 });
         })
-      },
+      }, async registerAdmin (req,res){
+            const role = res.locals.user == undefined ? "member" : res.locals.user.role;
+            if (! await cekRole(role)){
+                  res.status(401).json({
+                        message:'Unauthorized'
+                  });
+                  return
+            }
+           
+            const { email, password } = await req.body;
+             let payloadRole ="admin";
+             const encryptedPassword = await encryptPassword(password);
+             const payload ={
+                 email:email,
+                 password:encryptedPassword,
+                 role:payloadRole
+             }
+             authServices.register(payload).then(result=>{
+                 res.status(201).json({
+                       status: "OK",
+                       data: result,
+                     })
+             }).catch(e=>{
+                 res.status(400).json({
+                       status: "FAIL",
+                       message: e.message,
+                     });
+             })
+           },
 
       async login(req,res){
             const {email,password} = req.body;
@@ -42,7 +68,7 @@ module.exports={
                         const tempUser = {
                               id:user.id,
                               email:user.email,
-                              role:user.email,
+                              role:user.role,
                               createdAt:user.createdAt,
                               updatedAt:user.updatedAt
                            }

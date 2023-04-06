@@ -47,6 +47,29 @@ module.exports={
                   });
             })
       },
+
+      async carById (req,res){
+            let numbers = req.params.id
+            if (numbers == undefined){
+                  res.status(404).json({message:"missing path number"});
+                  return;
+            }
+            
+            mobileService.findCar(numbers).then(carResults=>{
+                  carResults == undefined ? res.status(404).json({status:"success",data:"Data Not Found"}) :  res.status(200).json({status:"succses",data :carResults});
+                  return;
+            }).catch(err =>{
+                  res.status(500).json({
+                        status:"Error",
+                        message:err.message
+                  });
+                  return;
+            })
+
+            
+
+
+      },
       async delete(req,res){
             const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
             try{
@@ -64,7 +87,7 @@ module.exports={
                         })
                         return
                   }else{
-                        deletedCar = await mobileService.delete(res.locals.user.email,carIsExist);
+                        deletedCar = await mobileService.delete(res.locals.user.email,carFind);
                         res.status(200).json({
                               status:"success",
                               message:"data sudah di hapus"
