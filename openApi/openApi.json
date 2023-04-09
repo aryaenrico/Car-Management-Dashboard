@@ -1,0 +1,683 @@
+{
+      "openapi":"3.0.2",
+      "info": {
+        "title":"Car Management Dashboard Api",
+        "version":"1.0.0",
+        "description": "this is an api for Car Management Dashboard",
+        "contact": {
+              "name": "arya enrico",
+              "email": "aryaenrico789@gmail.com"
+        }
+      },
+      "servers": [
+        {"url":"http://localhost:8000/api/v1/"}
+      ],
+      "paths": {
+        "/cars":{
+          "get":{
+            "summary": "Mendapat seluruh data mobil",
+            "description": "Mendapatkan seluruh data mobil yang belum pernah di hapus",
+            "responses": {
+              "200":{
+                "description": "success get all available data cars",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/arrayObjectCar"
+                    },"examples": {
+                      "allData":{
+                        "description": "get All exist data",
+                        "value":[
+                          {
+                            "status":"succes",
+                            "id":1,
+                            "nama_mobil":"sedan",
+                            "harga_sewa":200000,
+                            "ukuran":"kecil",
+                            "foto":"https://asset.cloudinary.com/dtl2mhf9x/8c21d10c9c10670709a80d3b10a4c1d7",
+                            "createdAT":"2022-04-10",
+                            "updatedAT":"2022-04-10",
+                            "createdBy":"arya enrico",
+                            "modifiedbAY":"arya enrico",
+                            "deletedBy":""
+                          }
+                        ]
+  
+                      },
+                      "thereIsNoData":{
+                        "description": "when data is null",
+                        "value":[
+                          {
+  
+                          }
+                        ]
+  
+                      }
+                    }
+                  }
+  
+                }
+              },
+              "500":{
+                "description": "failed response",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                       "$ref": "#/components/schemas/failResponse"
+                    }
+                    
+                  }
+                }
+              }
+  
+            }
+          },
+          "post":{
+            "summary": "create a new car data ",
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "description": "create a new car data and insert into database",
+            "requestBody":{
+             "required": true,
+             "description": "reques body for add car data",
+             "content": {
+               "multipart/form-data":{
+                "schema":{
+                  "$ref": "#/components/schemas/objectCarSchema"
+                }
+              }
+              }
+            },
+            "responses": {
+              "201":{ 
+                "description": "success create car",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/objectCar"
+                    },"examples": {
+                      "succes":{
+                        "description": "succes add data or update data",
+                        "value":{
+                          "nama_mobil":"sedan",
+                          "ukuran":"kecil",
+                          "harga_sewa":300000,
+                          "foto":"https://asset.cloudinary.com/dtl2mhf9x/8c21d10c9c10670709a80d3b10a4c1d7"
+                        }
+                      }
+                    }
+                  }
+                }
+  
+              },
+              "422":{
+                "description": "fail add data",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/failResponse"
+                    },"examples": {
+                      "fail":{
+                        "description": "response when fail add data ",
+                        "value":{
+                            "status":"FAIL",
+                            "message":"error message"
+                        }
+                      }
+                    }
+                  }
+  
+                }
+  
+              },"401":{
+                "description": "Unauthorized access ",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/cars/{id}":{
+          "put":{
+            "summary": "edit car",
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "description": "edit car based on id ",
+            "parameters": [
+              {
+                "$ref": "#/components/parameters/carId"
+              }
+  
+            ],
+            "requestBody":{
+              "required": true,
+              "content": {
+                "multipart/form-data":{
+                 "schema":{
+                  "$ref": "#/components/schemas/objectCarSchema"
+                  },
+                  "examples": {
+                    "jajan":{
+                      "summary": "test",
+                      "value":{
+                      }
+                    }
+                  }   
+                }
+              }
+            },
+            
+            "responses": {
+              "404":{
+                "$ref": "#/components/responses/notFound"
+              },
+              "401":{
+                "description": "Unauthorized person want edit data car",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/Unauthorized"
+                    }
+                  }
+                }
+              },
+              "200":{
+                "description": "succes edit car data",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                     "type": "object",
+                     "properties": {
+                      "status":{
+                        "type": "string",
+                        "example":"success"
+                      },
+                      "message":{
+                        "type": "string",
+                        "example":"updated"
+                      }
+                     }
+                    }
+                  }
+                }
+              }
+            }   
+          },
+          "delete":{
+            "summary": "menghapus data mobil",
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "description": "menghapus data mobil dengan memberikan value deletedby berdasarkan admin yang menghapus pada id mobil yang di tuju",
+            "parameters": [
+              {
+                "$ref": "#/components/parameters/carId"
+              }
+            ],
+            "responses": {
+              "200":{
+                "description": "response success delete car",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/failResponse"
+                    }
+                  }
+                }
+              },
+              "401":{
+                "description": "Unauthorized access ",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/Unauthorized"
+                    }
+                  }
+                }
+              },
+              "404":{
+                "$ref": "#/components/responses/notFound"
+              }
+            }
+          }
+        },
+        "/register":{
+          "post":{
+            "summary": "add an user with role member",
+            "description": "ednpoint to create an user with member role ",
+            "requestBody":{
+              "required": true,
+              "description": "payload consist an user information",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/registOrLoginPayload"
+                  }
+                }
+              }
+            },"responses": {
+              "200":{
+                "description": "responses when success",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/loginAndRequestResponse"
+                    }
+                  }
+                }
+  
+              },
+              "400":{
+                "description": "response when email already used or wrong input data ",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/failResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+  
+        },
+        "/login":{
+          "post":{
+            "summary": "ednpoint for login",
+            "requestBody":{
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/registOrLoginPayload"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200":{
+                "description": "when login succes",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "type": "object",
+                      "properties": {
+                        "status":{
+                          "type": "string",
+                          "example":"success"
+                        },
+                        "id":{
+                          "type": "integer",
+                          "example":1
+                        },
+                        "email":{
+                          "type": "string",
+                          "example":"aryaenrico789@gmail.com"
+                        },
+                        "password":{
+                          "type": "string",
+                          "example":"$2a$10$DoXxStCVVcBC9QVuNxjvN.HPozVVxSk1Az.l"
+                        },
+                        "role":{
+                          "type": "string",
+                          "example":"member"
+            
+                        },
+                        "updatedAt":{
+                          "type": "string",
+                          "example":"2023-04-09T13:11:40.017Z"
+                        },
+                        "createdAt":{
+                          "type": "string",
+                          "example":"2023-04-09T13:11:40.017Z"
+                        },
+                        "token":{
+                          "type": "string",
+                          "example":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiZW1haWwiOiJhcnlhMSIsInJvbGUiOiJhZG1pbiIsImNyZWF0ZWRBdCI6IjIwMjMtMDQtMDRUMTM6MTM6MDYuMzQyWiIsInVwZGF0ZWRBdCI6IjIwMjMtMDQtMDRUMTM6MTM6MDYuMzQyWiIsImlhdCI6MTY4MTA0OTE"
+                        }
+                      }
+                    }
+                  }
+                }
+              
+              }
+            }
+          }
+  
+        },
+        "/register/admin":{
+          "post":{
+            "description": "cretate user role with admin role and ",
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "summary": "create user with admin role",
+            "requestBody":{
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/registOrLoginPayload"
+                  }
+  
+                }
+              }
+            },
+            "responses": {
+              "200":{
+                "description": "success create user",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      
+                        "$ref": "#/components/schemas/loginAndRequestResponse"
+                      
+                    }
+                  }
+                }
+  
+              },"400":{
+                "description": "response when email already used or wrong input data ",
+                "content": {
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/failResponse"
+                    }
+                  }
+                }
+              },"401":{
+                "description": "Unauthorized access",
+                "content": { 
+                  "application/json":{
+                    "schema":{
+                      "$ref": "#/components/schemas/Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+  
+          }
+  
+        },
+        "/whoami":{
+          "get":{
+            "summary": "information user",
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "description": "get information user who current access",
+           "responses":{
+            "200":{
+              "description": "",
+              "content":{
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/loginAndRequestResponse"
+                  }
+                }
+              }
+            },"401":{
+              "description": "Unauthorized access",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "$ref": "#/components/schemas/Unauthorized"
+                  }
+                }
+              }
+            }
+           }
+          }
+        }
+      },
+      "externalDocs": {
+        "description": "Instagram",
+        "url": "https://www.instagram.com/aryaenrico"
+      },
+      "components": {
+        "parameters": {
+          "carId":{
+            "name": "carId",
+            "description": "id on selected car",
+            "required": true,
+            "in": "path",
+            "schema":{
+              "type": "number",
+              "minimum": 1
+            },
+            "examples": {
+              "sedan":{
+                "value":1
+              }
+            }
+            
+          }
+        },
+        "schemas": {
+          "registOrLogin":{
+            "type": "object",
+            "properties": {
+  
+              "email":{
+                "type": "string",
+                "example":"superadmin"
+              },
+              "password":{
+                "type": "string",
+                "example":"lockdown"
+              }
+            }
+          },
+            "registOrLoginPayload":{
+              "type": "object",
+            "properties": {
+  
+              "email":{
+                "type": "string",
+                "example":"superadmin",
+                "minLength": 1,
+                "required": true
+              },
+              "password":{
+                "type": "string",
+                "example":"lockdown",
+                "minLength": 1,
+                "required": true
+              }
+            }
+            },
+  
+          "objectCarSchema":{
+            "type": "object",
+                "properties": {
+                    "nama_mobil":{
+                      "type": "string",
+                       "required": true,
+                       "example":"sedan",
+                       "minLength": 1
+                    },
+                    "ukuran":{
+                      "type": "string",
+                      "required": true,
+                      "minLength": 1,
+                      "default":"kecil",
+                      "enum": ["kecil", "sedang","besar"]
+                    },
+                    "foto":{
+                      "type":"string",
+                      "format":"base64",
+                      "required": false,
+                      "example" :"https://asset.cloudinary.com/dtl2mhf9x/8c21d10c9c10670709a80d3b10a4c1d7",
+                      "default": "https://asset.cloudinary.com/dtl2mhf9x/8c21d10c9c10670709a80d3b10a4c1d7"
+                    },
+                    "harga_sewa":{
+                      "type":"integer",
+                      "minimum": 1000,
+                      "required": true,
+                      "example":10000
+                    } 
+                  }
+          },
+          "objectCar":{
+            "type":"object",
+            "properties": {
+              "nama_mobil":{
+                "type": "string"
+              },
+              "ukuran":{
+                "type": "string"
+              },
+              "foto":{
+                "type":"string",
+                "format":"base64"
+              },
+              "harga_sewa":{
+                "type":"integer"
+              } 
+            }
+          },
+          "arrayObjectCar":{
+            "type": "array",
+            "items":{
+            "type": "object",
+            "properties": {
+              "status":{
+                "type": "string"
+  
+              },
+              "id":{
+                "type": "integer"
+              },
+              "nama_mobil":{
+                "type": "string"
+              },
+              "ukuran":{
+                "type": "string"
+              },
+              "foto":{
+                "type":"string",
+                "format":"base64"
+              },
+              "harga_sewa":{
+                "type":"integer"
+              },"createdAT":{
+                "type": "string"
+              },"updatedAT":{
+                "type": "string"
+              },"createdBy":{
+                "type": "string"
+              },"updatedBy":{
+                "type": "string"
+              },"deletedBy":{
+                "type": "string"
+              }
+            }
+            }
+          },
+          "failResponse":{
+            "type": "object",
+            "properties": {
+              "status":{
+                "type": "string",
+                "example":"fail"
+              },
+              "message":{
+                "type": "string",
+                "example":"message error"
+              }
+  
+            }
+          },
+          "Unauthorized":{
+            "type": "object",
+            "properties": {
+              "status":{
+                "type": "string",
+                "example":"fail"
+              },
+              "message":{
+                "type": "string",
+                "example":" Access token is missing or invalid"
+              }
+  
+            }
+          },
+          "loginAndRequestResponse":{
+           
+            "type": "object",
+             "properties": {
+              "status":{
+                "type": "string",
+                "example":"success"
+              },
+              "id":{
+                "type": "integer",
+                "example":1
+              },
+              "email":{
+                "type": "string",
+                "example":"aryaenrico789@gmail.com"
+              },
+              "password":{
+                "type": "string",
+                "example":"$2a$10$DoXxStCVVcBC9QVuNxjvN.HPozVVxSk1Az.l"
+              },
+              "role":{
+                "type": "string",
+                "example":"member"
+  
+              },
+              "updatedAt":{
+                "type": "string",
+                "example":"2023-04-09T13:11:40.017Z"
+              },
+              "createdAt":{
+                "type": "string",
+                "example":"2023-04-09T13:11:40.017Z"
+              }
+          }
+        }
+        },"responses": {
+          "notFound":{
+              "description": "when the data you are looking for does not exis",
+              "content": {
+                "application/json":{
+                  "schema":{
+                    "type": "object",
+                    "properties": {
+                      "status":{
+                        "type": "string",
+                        "example":"success"
+                      },
+                      "message":{
+                        "type": "string",
+                        "example":"data not found"
+                      }
+    
+                    }
+                  }
+                }
+            }
+          }
+          
+        }
+  
+      }
+    }
+  

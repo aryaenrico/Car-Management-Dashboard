@@ -1,4 +1,4 @@
-const uploadMemory = require("../../middleware/uploadMemory");
+
 const cloudinary = require("../../config/cloudinary");
 
 module.exports={

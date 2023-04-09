@@ -1,6 +1,5 @@
-const {Mobil, sequelize} = require('../models');
-const {User} = require('../models');
-const { QueryTypes } = require('sequelize');
+const {Mobil} = require('../models');
+
 
 module.exports ={
 

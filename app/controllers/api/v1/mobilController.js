@@ -1,6 +1,5 @@
 const mobileService = require("../../../services/mobileService");
 const uploadService = require("../../../services/uploadService");
-const uploadMemory = require("../../../../middleware/uploadMemory");
 const {cekRole} = require('../../../../utils/file');
 
  
@@ -71,10 +70,13 @@ module.exports={
 
       },
       async delete(req,res){
-            const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
+           
             try{
+                  const role = res.locals.user == undefined ? res.status(401).json({ status:"fail",message:"Unautorized"})  :res.locals.user.role;
+                  
                   if (! await cekRole(role)){
                         res.status(401).json({
+                              status:"fail",
                               message:'Unauthorized'
                         });
                         return
@@ -104,7 +106,7 @@ module.exports={
             }
       },
       async update(req,res){
-            const role = res.locals.user == undefined ? res.status(401).json({message:"Unautorized"}) :res.locals.user.role;
+            const role = res.locals.user == undefined ? res.status(401).json({status:"fail",message:"Unautorized"}) :res.locals.user.role;
             if (! await cekRole(role)){
                   res.status(401).json({
                         message:'Unauthorized'
@@ -124,13 +126,16 @@ module.exports={
             updatedBy:res.locals.user.email};
             mobileService.update(carFind,payload).then(result=>{
                         res.status(200).json({
-                              status:"updated"
+                              status:"success",
+                              message:"updated"
                         });
                   }) .catch((err) => {
                         res.status(422).json({
-                          status: "FAIL",
+                          status: "fail",
                           message: err.message,
                         });
-                      }); 
+                      }).finally(status=>{
+                        return;
+                      })
       }      
 }

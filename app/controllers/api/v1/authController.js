@@ -27,7 +27,7 @@ module.exports={
         })
       }, async registerAdmin (req,res){
             const role = res.locals.user == undefined ? "member" : res.locals.user.role;
-            if (! await cekRole(role)){
+            if (! role != "superadmin"){
                   res.status(401).json({
                         message:'Unauthorized'
                   });
