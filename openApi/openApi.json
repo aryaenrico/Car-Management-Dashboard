@@ -453,7 +453,7 @@
       "components": {
         "parameters": {
           "carId":{
-            "name": "carId",
+            "name": "id",
             "description": "id on selected car",
             "required": true,
             "in": "path",
@@ -491,14 +491,14 @@
               "email":{
                 "type": "string",
                 "example":"superadmin",
-                "minLength": 1,
-                "required": true
+                "minLength": 1
+               
               },
               "password":{
                 "type": "string",
                 "example":"lockdown",
-                "minLength": 1,
-                "required": true
+                "minLength": 1
+               
               }
             }
             },
@@ -508,13 +508,13 @@
                 "properties": {
                     "nama_mobil":{
                       "type": "string",
-                       "required": true,
+      
                        "example":"sedan",
                        "minLength": 1
                     },
                     "ukuran":{
                       "type": "string",
-                      "required": true,
+                     
                       "minLength": 1,
                       "default":"kecil",
                       "enum": ["kecil", "sedang","besar"]
@@ -522,14 +522,14 @@
                     "foto":{
                       "type":"string",
                       "format":"base64",
-                      "required": false,
+                    
                       "example" :"https://asset.cloudinary.com/dtl2mhf9x/8c21d10c9c10670709a80d3b10a4c1d7",
                       "default": "https://asset.cloudinary.com/dtl2mhf9x/8c21d10c9c10670709a80d3b10a4c1d7"
                     },
                     "harga_sewa":{
                       "type":"integer",
                       "minimum": 1000,
-                      "required": true,
+                   
                       "example":10000
                     } 
                   }
