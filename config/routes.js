@@ -2,10 +2,13 @@ const express =require ('express');
 const controller =require ("../app/controllers/");
 const apiRouter = express.Router();
 const appRouter =express.Router();
+var cors = require('cors')
 const uploadMemory =require('../middleware/uploadMemory');
 
+
+
 apiRouter.post("/api/v1/cars",[controller.api.v1.authController.authorize,uploadMemory.single("foto")],controller.api.v1.mobilController.create);
-apiRouter.get("/api/v1/cars",controller.api.v1.mobilController.allCar);
+apiRouter.get("/api/v1/cars",cors(),controller.api.v1.mobilController.allCar);
 apiRouter.get("/api/v1/cars/:id",controller.api.v1.mobilController.carById);
 apiRouter.post("/api/v1/register",controller.api.v1.authController.register);
 apiRouter.post("/api/v1/login",controller.api.v1.authController.login);
