@@ -1,9 +1,10 @@
 
+const { DATE } = require('sequelize');
 const repositories = require ('../repositories/mobilRepositories');
 
 
 module.exports ={
-      create({nama_mobil,ukuran,foto,harga_sewa,id}){
+      create({nama_mobil,ukuran,foto,harga_sewa,id,tipeDriver,capacity,availableAt}){
             const payload={
                   nama_mobil:nama_mobil,
                   ukuran:ukuran,
@@ -12,6 +13,9 @@ module.exports ={
                   createdBy:id,
                   updatedBy:id,
                   deletedBy:"",
+                  availableAt:availableAt ?? new DATE(),
+                  tipeDriver:tipeDriver,
+                  capacity:capacity
             };
             return repositories.create(payload);
  

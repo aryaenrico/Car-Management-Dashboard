@@ -30,6 +30,20 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull: true
     },
+    availableAt:{
+      type:DataTypes.DATE,
+      allowNull: false,
+
+    },
+    tipeDriver:{
+      type:DataTypes.STRING,
+      allowNull: false
+    },
+    
+    capacity:{
+      type:DataTypes.INTEGER,
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'Mobil',
